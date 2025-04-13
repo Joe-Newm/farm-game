@@ -12,7 +12,6 @@ import com.farmgame.farmgame.Player;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class FarmGame extends ApplicationAdapter {
     private SpriteBatch batch;
-    private Texture image;
     private Player player;
     public Viewport viewport;
     public Camera camera;
@@ -20,8 +19,7 @@ public class FarmGame extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
-        player = new Player(5);
+        player = new Player(250);
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(1280, 720,camera);
@@ -30,14 +28,14 @@ public class FarmGame extends ApplicationAdapter {
 
     @Override
     public void render() {
-        ScreenUtils.clear(0f, 0f, 0f, 1f);
+        float delta = Gdx.graphics.getDeltaTime();
+        ScreenUtils.clear(0.2f, 0.5f, 0.2f, 1f);
         camera.update();
         viewport.apply();
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        batch.draw(image, 140, 210);
-        player.draw(batch);
+        player.draw(batch, delta);
         batch.end();
     }
 
@@ -48,6 +46,5 @@ public class FarmGame extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        image.dispose();
     }
 }

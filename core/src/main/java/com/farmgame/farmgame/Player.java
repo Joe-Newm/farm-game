@@ -12,6 +12,7 @@ public class Player {
     Texture playTex;
     Sprite sprite;
     Vector2 position;
+    boolean lookDirection;
 
     public Player(float speed) {
         this.speed = speed;
@@ -21,23 +22,36 @@ public class Player {
         position = new Vector2( 100  , 100);
     }
 
-    public void update() {
+    public void update(float delta) {
+        boolean movingLeft = false;
+        boolean movingRight = false;
+
         if (Gdx.input.isKeyPressed(Keys.A)) {
-            position.x -= speed;
+            position.x -= delta * speed;
+            movingLeft = true;
         }
         if (Gdx.input.isKeyPressed(Keys.D)) {
-            position.x += speed;
+            position.x += delta * speed;
+            movingRight = true;
         }
         if (Gdx.input.isKeyPressed(Keys.W)) {
-            position.y += speed;
+            position.y += delta * speed;
         }
         if (Gdx.input.isKeyPressed(Keys.S)) {
-            position.y -= speed;
+            position.y -= delta * speed;
         }
+
+        if (movingLeft && !sprite.isFlipX()) {
+            sprite.flip(true, false); // Flip horizontally to face left
+        }
+        if (movingRight && sprite.isFlipX()) {
+            sprite.flip(true, false); // Flip back to face right
+        }
+
     }
 
-    public void draw(SpriteBatch batch) {
-        update();
+    public void draw(SpriteBatch batch, float delta) {
+        update(delta);
         sprite.setPosition(position.x, position.y);
         sprite.draw(batch);
     }
