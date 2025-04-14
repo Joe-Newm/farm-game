@@ -3,6 +3,7 @@ package com.farmgame.farmgame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -15,12 +16,17 @@ public class FarmGame extends ApplicationAdapter {
     private Player player;
     public Viewport viewport;
     public Camera camera;
+    private Texture testMapTex;
+    private Sprite testMapSprite;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         player = new Player(250);
+        testMapTex = new Texture(Gdx.files.internal("map/background1-big-wall.png"));
+        testMapSprite = new Sprite(testMapTex);
 
+        // camera and viewport stuff
         camera = new OrthographicCamera();
         viewport = new FitViewport(1280, 720,camera);
         Gdx.graphics.setWindowedMode(1280, 720);
@@ -29,12 +35,13 @@ public class FarmGame extends ApplicationAdapter {
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
-        ScreenUtils.clear(0.2f, 0.5f, 0.2f, 1f);
+        ScreenUtils.clear(0f, 0f, 0f, 1f);
         camera.update();
         viewport.apply();
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        testMapSprite.draw(batch);
         player.draw(batch, delta);
         batch.end();
     }
