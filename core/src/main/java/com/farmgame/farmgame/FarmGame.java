@@ -44,6 +44,12 @@ public class FarmGame extends ApplicationAdapter {
         testMapSprite.draw(batch);
         player.draw(batch, delta);
         batch.end();
+
+        //camera follows player
+        camera.position.set(player.position.x, player.position.y, 0);
+        camera.update();
+        // Apply the camera's view matrix to the batch
+        batch.setProjectionMatrix(camera.combined);
     }
 
     public void resize(int width, int height) {
