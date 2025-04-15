@@ -38,9 +38,9 @@ public class FarmGame extends ApplicationAdapter {
         // camera and viewport stuff
 
 
-        Gdx.graphics.setWindowedMode(1920, 1080);
+        Gdx.graphics.setWindowedMode(1280, 720);
         camera = new OrthographicCamera();
-        viewport = new FitViewport(480, 270,camera);
+        viewport = new FitViewport(320, 180,camera);
         camera.position.x = player.position.x;
         camera.position.y = player.position.y;
 
