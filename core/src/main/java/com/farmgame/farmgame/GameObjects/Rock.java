@@ -13,7 +13,7 @@ public class Rock {
     public Rectangle boundingBox;
 
     public Rock(Vector2 position) {
-        rock = new Texture("objects/rock.png");
+        rock = new Texture("objects/rock2.png");
         sprite = new Sprite(rock);
         this.position = position;
     }

@@ -2,6 +2,7 @@ package com.farmgame.farmgame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -43,6 +44,7 @@ public class FarmGame extends ApplicationAdapter {
         camera.position.x = player.position.x;
         camera.position.y = player.position.y;
 
+
     }
 
     @Override
@@ -79,6 +81,23 @@ public class FarmGame extends ApplicationAdapter {
 
         //collisions
         rockCollision();
+
+        //fullscreen
+        full();
+    }
+
+    // fullscreentoggle
+    public void full() {
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.F11)) {
+            if (Gdx.graphics.isFullscreen()) {
+                // Go back to windowed mode
+                Gdx.graphics.setWindowedMode(1280, 720); // or whatever default you use
+            } else {
+                // Go fullscreen on the current monitor
+                Graphics.DisplayMode displayMode = Gdx.graphics.getDisplayMode();
+                Gdx.graphics.setFullscreenMode(displayMode);
+            }
+        }
     }
 
     // collision rock and player
