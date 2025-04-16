@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+
 public class Player {
     float speed;
     Texture playTex;
@@ -20,9 +22,12 @@ public class Player {
     public float prevX;
     public float prevY;
     public Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
+    public Animation<TextureRegion> idleAnimation;
+    public ArrayList<Animation<TextureRegion>> animations;
     public Texture walkSheet;
     float walkAnimationTime;
     private static final int FRAME_ROWS = 1, FRAME_COLS = 4;
+    public int selectedAnimation;
 
     public Player(float speed) {
         this.speed = speed;
@@ -44,44 +49,78 @@ public class Player {
         walkFrames[1] = tmpFrames[0][2];
         walkFrames[2] = tmpFrames[0][3];
 
+        TextureRegion[] idleFrame = new TextureRegion[1];
+        idleFrame[0] = tmpFrames[0][0];
 // Create the animation
         walkAnimation = new Animation<TextureRegion>(0.1f, walkFrames);
-        walkAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        idleAnimation = new Animation<TextureRegion>(0.1f, idleFrame);
+
+        // add animations to arraylist
+        selectedAnimation = 0;
+        animations = new ArrayList<>();
+        animations.add(idleAnimation);
+        animations.add(walkAnimation);
     }
 
-    public void controls(float delta) {
+    public void controls(float delta, TextureRegion currentFrame) {
         boolean movingLeft = false;
         boolean movingRight = false;
-        TextureRegion currentFrame = walkAnimation.getKeyFrame(walkAnimationTime);
+        boolean moving = false;
 
         if (Gdx.input.isKeyPressed(Keys.A)) {
-
             prevX = position.x;
             position.x -= delta * speed;
             movingLeft = true;
+            moving = true;
+            idleAnimation.setPlayMode(Animation.PlayMode.LOOP);
         }
         if (Gdx.input.isKeyPressed(Keys.D)) {
             prevX = position.x;
             position.x += delta * speed;
             movingRight = true;
+            moving = true;
+
+            walkAnimation.setPlayMode(Animation.PlayMode.LOOP);
         }
         if (Gdx.input.isKeyPressed(Keys.W)) {
             prevY = position.y;
             position.y += delta * speed;
+
+            moving = true;
+            walkAnimation.setPlayMode(Animation.PlayMode.LOOP);
         }
         if (Gdx.input.isKeyPressed(Keys.S)) {
             prevY = position.y;
             position.y -= delta * speed;
+            moving = true;
+            walkAnimation.setPlayMode(Animation.PlayMode.LOOP);
         }
+
 
         if (movingLeft && !currentFrame.isFlipX()) {
-            currentFrame.flip(true, false); // Flip horizontally to face left
+            for (Animation<TextureRegion> anim : animations) {
+                for (TextureRegion frame : anim.getKeyFrames()) {
+                    if (!frame.isFlipX()) {
+                        frame.flip(true, false);
+                    }
+                }
+            }
         }
         if (movingRight && currentFrame.isFlipX()) {
-            currentFrame.flip(true, false); // Flip back to face right
+            for (Animation<TextureRegion> anim : animations) {
+                for (TextureRegion frame : anim.getKeyFrames()) {
+                    if (frame.isFlipX()) {
+                        frame.flip(true, false);
+                    }
+                }
+            }
+        }
+        if (!moving) {
+            selectedAnimation = 0;
+        } else {
+            selectedAnimation = 1;
         }
 
-        //animation
 
     }
 
@@ -90,11 +129,11 @@ public class Player {
     }
 
     public void draw(SpriteBatch batch, float delta) {
-        controls(delta);
         update(delta);
+        TextureRegion currentFrame = animations.get(selectedAnimation).getKeyFrame(walkAnimationTime);
         sprite.setPosition(position.x, position.y);
-        TextureRegion currentFrame = walkAnimation.getKeyFrame(walkAnimationTime);
         batch.draw(currentFrame, position.x, position.y);
         walkAnimationTime += delta;
+        controls(delta, currentFrame);
     }
 }
