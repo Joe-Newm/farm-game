@@ -74,8 +74,8 @@ public class FarmGame extends ApplicationAdapter {
 
         batch.begin();
         testMapSprite.draw(batch);
-        player.draw(batch, delta);
         rock.draw(batch, delta);
+        player.draw(batch, delta);
         batch.end();
 
 
