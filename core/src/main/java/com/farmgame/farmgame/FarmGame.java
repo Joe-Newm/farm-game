@@ -10,8 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.farmgame.farmgame.Player;
 import com.farmgame.farmgame.GameObjects.Rock;
+
+import entity.Player;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class FarmGame extends ApplicationAdapter {
