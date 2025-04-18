@@ -1,4 +1,4 @@
-package entity;
+package com.farmgame.farmgame.entity;
 
 import java.util.ArrayList;
 
