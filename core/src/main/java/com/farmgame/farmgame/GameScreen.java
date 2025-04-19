@@ -100,6 +100,7 @@ public class GameScreen implements Screen {
         hudStage.draw();
 
         rockCollision();
+        rockPickaxeCollision();
         handleFullscreenToggle();
     }
 
@@ -129,6 +130,15 @@ public class GameScreen implements Screen {
         }
 
         player.boundingBox.setPosition(player.position.x, player.position.y);
+    }
+
+    private void rockPickaxeCollision() {
+        if (Player.hitBox != null) {
+
+            if (Player.hitBox.overlaps(rock.boundingBox)) {
+                System.out.println("rock hit");
+            }
+        }
     }
 
     @Override
