@@ -90,8 +90,8 @@ public class GameScreen implements Screen {
         //debug hitbox
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
-        if (Player.hitBox != null) {
-            shapeRenderer.rect(Player.hitBox.x, Player.hitBox.y, Player.hitBox.width, Player.hitBox.height);
+        if (player.hitBox != null) {
+            shapeRenderer.rect(player.hitBox.x, player.hitBox.y, player.hitBox.width, player.hitBox.height);
         }
         shapeRenderer.end();
 
@@ -133,9 +133,9 @@ public class GameScreen implements Screen {
     }
 
     private void rockPickaxeCollision() {
-        if (Player.hitBox != null) {
+        if (player.hitBox != null) {
 
-            if (Player.hitBox.overlaps(rock.boundingBox)) {
+            if (player.hitBox.overlaps(rock.boundingBox)) {
                 System.out.println("rock hit");
             }
         }

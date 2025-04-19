@@ -22,7 +22,7 @@ public class Item {
         offsetFlag = false;
     }
 
-    public static void action() {
+    public void action() {
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 // swing pickaxe
                 if (Player.inventory[ItemSelector.selectedSlot] != null) {

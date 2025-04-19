@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.farmgame.farmgame.HUD.ItemSelector;
 import com.farmgame.farmgame.items.Item;
 
 public class Player {
@@ -25,7 +26,8 @@ public class Player {
     public static Vector2 drawOffset = new Vector2();
     public float tmpSpeed;
     public static Item[] inventory;
-    public static Rectangle hitBox;
+    public Rectangle hitBox;
+    public Item pickaxe;
 
 
     public Player(float speed) {
@@ -50,7 +52,8 @@ public class Player {
         // inventory
         this.inventory = new Item[9];
         //add pickaxe to inventory
-        inventory[0] = new Item("pickaxe", new Texture(Gdx.files.internal("items/pickaxe-item.png")), 1);
+        pickaxe = new Item("pickaxe", new Texture(Gdx.files.internal("items/pickaxe-item.png")), 1);
+        inventory[0] = pickaxe;
     }
 
     public void controls(float delta, TextureRegion currentFrame) {
@@ -108,13 +111,9 @@ public class Player {
         } else {
             PlayerAnim.selectedAnimation = 1;
         }
-
-        // listen for item action.
-        Item.action();
-        hitBox();
     }
 
-    public static void hitBox() {
+    public void hitBox() {
         float spriteX = sprite.getX();
         float spriteY = sprite.getY();
         float spriteWidth = sprite.getWidth() ;
@@ -130,9 +129,17 @@ public class Player {
             hitBox = null;
         }
     }
+    public void listenForItemAction() {
+        // listen for item action.
+        if (inventory[ItemSelector.selectedSlot] != null) {
+            inventory[ItemSelector.selectedSlot].action();
+        }
+    }
 
     public void update(float delta) {
         boundingBox = new Rectangle(position.x, position.y, sprite.getWidth() * sprite.getScaleX(), sprite.getHeight() * sprite.getScaleY());
+        listenForItemAction();
+        hitBox();
     }
 
     public void draw(SpriteBatch batch, float delta) {
