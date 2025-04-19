@@ -9,20 +9,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.farmgame.farmgame.items.Item;
 
 public class Player {
     public float speed;
     public Texture playTex;
-    public Sprite sprite;
-    public Vector2 position;
+    public static Sprite sprite;
+    public static Vector2 position;
     public boolean lookDirection;
     public Rectangle boundingBox;
     public float prevX;
     public float prevY;
     public TextureRegion currentFrame;
-    public boolean isFlipped;
-    public Vector2 drawOffset = new Vector2();
+    public static boolean isFlipped;
+    public static Vector2 drawOffset = new Vector2();
     public float tmpSpeed;
+    public static Item[] inventory;
+    public static Rectangle hitBox;
 
 
     public Player(float speed) {
@@ -43,6 +46,11 @@ public class Player {
 
         currentFrame = PlayerAnim.animations.get(PlayerAnim.selectedAnimation).getKeyFrame(PlayerAnim.walkAnimationTime);
         isFlipped = currentFrame.isFlipX();
+
+        // inventory
+        this.inventory = new Item[9];
+        //add pickaxe to inventory
+        inventory[0] = new Item("pickaxe", new Texture(Gdx.files.internal("items/pickaxe-item.png")), 1);
     }
 
     public void controls(float delta, TextureRegion currentFrame) {
@@ -51,7 +59,7 @@ public class Player {
         boolean moving = false;
 
         // movement
-        if (!Gdx.input.isKeyPressed(Keys.SPACE)) {
+        if (PlayerAnim.selectedAnimation != 2) {
             if (Gdx.input.isKeyPressed(Keys.A)) {
                 prevX = position.x;
                 position.x -= delta * tmpSpeed;
@@ -95,24 +103,32 @@ public class Player {
                 }
             }
         }
-        System.out.println(isFlipped);
         if (!moving) {
             PlayerAnim.selectedAnimation = 0;
         } else {
             PlayerAnim.selectedAnimation = 1;
         }
 
-        // swing pickaxe
-        if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-            PlayerAnim.selectedAnimation = 2;
-            PlayerAnim.swingPickaxeAnimation.setPlayMode(Animation.PlayMode.LOOP);
-            if (isFlipped && PlayerAnim.selectedAnimation == 2) {
-                drawOffset.x = -16;
+        // listen for item action.
+        Item.action();
+        hitBox();
+    }
+
+    public static void hitBox() {
+        float spriteX = sprite.getX();
+        float spriteY = sprite.getY();
+        float spriteWidth = sprite.getWidth() ;
+        float spriteHeight = sprite.getHeight();
+
+        if (PlayerAnim.selectedAnimation == 2) {
+            if (isFlipped) {
+                hitBox = new Rectangle(spriteX - 16, spriteY, spriteWidth, spriteHeight);
+            } else {
+                hitBox = new Rectangle(spriteX + spriteWidth, spriteY, spriteWidth, spriteHeight);
             }
         } else {
-            drawOffset.x = 0;
+            hitBox = null;
         }
-        System.out.println(drawOffset.x);
     }
 
     public void update(float delta) {

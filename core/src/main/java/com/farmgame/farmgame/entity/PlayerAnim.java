@@ -47,8 +47,12 @@ public class PlayerAnim {
         // add animations to arraylist
         selectedAnimation = 0;
         animations = new ArrayList<>();
+
+        //0
         animations.add(idleAnimation);
+        //1
         animations.add(walkAnimation);
+        //2
         animations.add(swingPickaxeAnimation);
     }
 }
