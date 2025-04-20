@@ -149,7 +149,11 @@ public class GameScreen implements Screen {
         viewport.update(width, height, true);
     }
 
-    @Override public void show() { }
+    @Override public void show() {
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(hudStage);
+        Gdx.input.setInputProcessor(multiplexer);
+    }
     @Override public void hide() { }
     @Override public void pause() { }
     @Override public void resume() { }
