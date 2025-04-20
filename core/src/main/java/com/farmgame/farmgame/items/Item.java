@@ -39,9 +39,9 @@ public class Item {
                 // swing pickaxe
                 if (Player.inventory[ItemSelector.selectedSlot] != null) {
                     if (Player.inventory[ItemSelector.selectedSlot].name == "pickaxe") {
-                        PlayerAnim.selectedAnimation = 2;
+                        PlayerAnim.selectedAnimation = 6;
                         PlayerAnim.swingPickaxeAnimation.setPlayMode(Animation.PlayMode.LOOP);
-                        if (Player.isFlipped && PlayerAnim.selectedAnimation == 2) {
+                        if (Player.isFlipped && PlayerAnim.selectedAnimation == 6) {
                             Player.drawOffset.x = -16;
                             offsetFlag = true;
                         }
@@ -51,7 +51,7 @@ public class Item {
 
             }
 
-            if (PlayerAnim.selectedAnimation != 2 && offsetFlag) {
+            if (PlayerAnim.selectedAnimation != 6 && offsetFlag) {
                 Player.drawOffset.x = 0;
                 offsetFlag = false;
             }

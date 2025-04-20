@@ -8,8 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class PlayerAnim {
-    public static Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
-    public static Animation<TextureRegion> idleAnimation;
+    public static Animation<TextureRegion> walkAnimationLeftRight;
+    public static Animation<TextureRegion> walkAnimationUp;
+    public static Animation<TextureRegion> walkAnimationDown;
+    public static Animation<TextureRegion> idleAnimationLeftRight;
+    public static Animation<TextureRegion> idleAnimationUp;
+    public static Animation<TextureRegion> idleAnimationDown;
     public static Animation<TextureRegion> swingPickaxeAnimation;
     public static ArrayList<Animation<TextureRegion>> animations;
     public static Texture walkSheet;
@@ -17,31 +21,51 @@ public class PlayerAnim {
     public static float walkAnimationTime;
     public static int selectedAnimation;
     public static void create() {
-        walkSheet = new Texture(Gdx.files.internal("player/player-anim.png"));
+        walkSheet = new Texture(Gdx.files.internal("player/player-anim-v2.png"));
         swingPickaxeSheet = new Texture(Gdx.files.internal("player/pickaxe-swing.png"));
 
         // animations
         //walk anim sheet
-        TextureRegion[][] tmpFrames = TextureRegion.split(walkSheet, walkSheet.getWidth() / 4, walkSheet.getHeight() / 1);
+        TextureRegion[][] tmpFrames = TextureRegion.split(walkSheet, walkSheet.getWidth() / 4, walkSheet.getHeight() / 3);
         //swing pickaxe sheet
         TextureRegion[][] tmpSwingFrames = TextureRegion.split(swingPickaxeSheet, swingPickaxeSheet.getWidth() / 2, swingPickaxeSheet.getHeight() / 1);
 
-        // walk anim
-        TextureRegion[] walkFrames = new TextureRegion[3];
-        walkFrames[0] = tmpFrames[0][1];
-        walkFrames[1] = tmpFrames[0][2];
-        walkFrames[2] = tmpFrames[0][3];
+        // walk anim (left right)
+        TextureRegion[] walkFramesHorizontal = new TextureRegion[3];
+        walkFramesHorizontal[0] = tmpFrames[0][1];
+        walkFramesHorizontal[1] = tmpFrames[0][2];
+        walkFramesHorizontal[2] = tmpFrames[0][3];
+        // walk anim (up)
+        TextureRegion[] walkFramesUp = new TextureRegion[3];
+        walkFramesUp[0] = tmpFrames[2][1];
+        walkFramesUp[1] = tmpFrames[2][2];
+        walkFramesUp[2] = tmpFrames[2][3];
+        //walk anim (down)
+        TextureRegion[] walkFramesDown = new TextureRegion[3];
+        walkFramesDown[0] = tmpFrames[1][1];
+        walkFramesDown[1] = tmpFrames[1][2];
+        walkFramesDown[2] = tmpFrames[1][3];
         //swing pickaxe anim
         TextureRegion[] swingFrames = new TextureRegion[2];
         swingFrames[0] = tmpSwingFrames[0][0];
         swingFrames[1] = tmpSwingFrames[0][1];
-        //idle anim
+        //idle (left right) anim
         TextureRegion[] idleFrame = new TextureRegion[1];
         idleFrame[0] = tmpFrames[0][0];
+        //idle (up) anim
+        TextureRegion[] idleUpFrame = new TextureRegion[1];
+        idleUpFrame[0] = tmpFrames[2][0];
+        //idle (down) anim
+        TextureRegion[] idleDownFrame = new TextureRegion[1];
+        idleDownFrame[0] = tmpFrames[1][0];
 
         // Create the animation
-        walkAnimation = new Animation<TextureRegion>(0.1f, walkFrames);
-        idleAnimation = new Animation<TextureRegion>(0.1f, idleFrame);
+        walkAnimationLeftRight = new Animation<TextureRegion>(0.1f, walkFramesHorizontal);
+        walkAnimationUp = new Animation<TextureRegion>(0.1f, walkFramesUp);
+        walkAnimationDown = new Animation<TextureRegion>(0.1f, walkFramesDown);
+        idleAnimationLeftRight = new Animation<TextureRegion>(0.1f, idleFrame);
+        idleAnimationUp = new Animation<TextureRegion>(0.1f, idleUpFrame);
+        idleAnimationDown = new Animation<TextureRegion>(0.1f, idleDownFrame);
         swingPickaxeAnimation = new Animation<TextureRegion>(0.1f, swingFrames);
 
         // add animations to arraylist
@@ -49,10 +73,18 @@ public class PlayerAnim {
         animations = new ArrayList<>();
 
         //0
-        animations.add(idleAnimation);
+        animations.add(idleAnimationLeftRight);
         //1
-        animations.add(walkAnimation);
+        animations.add(idleAnimationUp);
         //2
+        animations.add(idleAnimationDown);
+        //3
+        animations.add(walkAnimationLeftRight);
+        //4
+        animations.add(walkAnimationUp);
+        //5
+        animations.add(walkAnimationDown);
+        //6
         animations.add(swingPickaxeAnimation);
     }
 }

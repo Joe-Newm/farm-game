@@ -23,6 +23,7 @@ public class Player {
     public float prevY;
     public TextureRegion currentFrame;
     public static boolean isFlipped;
+    public static boolean facingUp = false;
     public static Vector2 drawOffset = new Vector2();
     public float tmpSpeed;
     public static Item[] inventory;
@@ -43,7 +44,9 @@ public class Player {
 
         //animations
         PlayerAnim.create();
-        PlayerAnim.walkAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        PlayerAnim.walkAnimationLeftRight.setPlayMode(Animation.PlayMode.LOOP);
+        PlayerAnim.walkAnimationUp.setPlayMode(Animation.PlayMode.LOOP);
+        PlayerAnim.walkAnimationDown.setPlayMode(Animation.PlayMode.LOOP);
         isFlipped = false;
 
         currentFrame = PlayerAnim.animations.get(PlayerAnim.selectedAnimation).getKeyFrame(PlayerAnim.walkAnimationTime);
@@ -57,10 +60,12 @@ public class Player {
     public void controls(float delta, TextureRegion currentFrame) {
         boolean movingLeft = false;
         boolean movingRight = false;
+        boolean movingUp = false;
+        boolean movingDown = false;
         boolean moving = false;
 
         // movement
-        if (PlayerAnim.selectedAnimation != 2) {
+        if (PlayerAnim.selectedAnimation != 6) {
             if (Gdx.input.isKeyPressed(Keys.A)) {
                 prevX = position.x;
                 position.x -= delta * tmpSpeed;
@@ -76,11 +81,13 @@ public class Player {
             if (Gdx.input.isKeyPressed(Keys.W)) {
                 prevY = position.y;
                 position.y += delta * tmpSpeed;
+                movingUp = true;
                 moving = true;
             }
             if (Gdx.input.isKeyPressed(Keys.S)) {
                 prevY = position.y;
                 position.y -= delta * tmpSpeed;
+                movingDown = true;
                 moving = true;
             }
         }
@@ -106,8 +113,12 @@ public class Player {
         }
         if (!moving) {
             PlayerAnim.selectedAnimation = 0;
-        } else {
-            PlayerAnim.selectedAnimation = 1;
+        } else if (movingRight || movingLeft) {
+            PlayerAnim.selectedAnimation = 3;
+        } else if (movingUp) {
+            PlayerAnim.selectedAnimation = 4;
+        } else if (movingDown) {
+            PlayerAnim.selectedAnimation = 5;
         }
     }
 
@@ -117,7 +128,7 @@ public class Player {
         float spriteWidth = sprite.getWidth() ;
         float spriteHeight = sprite.getHeight();
 
-        if (PlayerAnim.selectedAnimation == 2) {
+        if (PlayerAnim.selectedAnimation == 6) {
             if (isFlipped) {
                 hitBox = new Rectangle(spriteX - 16, spriteY, spriteWidth, spriteHeight);
             } else {
