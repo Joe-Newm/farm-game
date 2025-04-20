@@ -1,9 +1,6 @@
-package com.farmgame.farmgame;
+package com.farmgame.farmgame.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +15,6 @@ import com.farmgame.farmgame.GameObjects.Rock;
 import com.farmgame.farmgame.HUD.HUDStage;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.FarmGame;
-import com.farmgame.farmgame.items.Item;
 
 public class GameScreen implements Screen {
     private final FarmGame game;
@@ -102,6 +98,7 @@ public class GameScreen implements Screen {
         rockCollision();
         rockPickaxeCollision();
         handleFullscreenToggle();
+        pauseGame();
     }
 
     private void handleFullscreenToggle() {
@@ -112,6 +109,12 @@ public class GameScreen implements Screen {
                 Graphics.DisplayMode displayMode = Gdx.graphics.getDisplayMode();
                 Gdx.graphics.setFullscreenMode(displayMode);
             }
+        }
+    }
+
+    private void pauseGame() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.setScreen(new PauseScreen(game, this));
         }
     }
 

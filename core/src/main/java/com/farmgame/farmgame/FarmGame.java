@@ -1,7 +1,7 @@
 package com.farmgame.farmgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.farmgame.farmgame.GameScreen;
+import com.farmgame.farmgame.screens.GameScreen;
 
 public class FarmGame extends Game {
     public SpriteBatch batch;
