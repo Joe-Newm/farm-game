@@ -11,11 +11,13 @@ public class Rock {
     public Sprite sprite;
     Vector2 position;
     public Rectangle boundingBox;
+    public float health;
 
     public Rock(Vector2 position) {
         rock = new Texture("objects/rock2.png");
         sprite = new Sprite(rock);
         this.position = position;
+        this.health = 3f;
     }
 
     public void update(float delta) {

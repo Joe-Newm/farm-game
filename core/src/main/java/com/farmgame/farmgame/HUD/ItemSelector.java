@@ -66,7 +66,7 @@ public class ItemSelector extends Table {
         }
     }
 
-    private void redraw() {
+    public void redraw() {
         this.clear();
         if (selectedSlot > 8) {
             selectedSlot = 0;

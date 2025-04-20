@@ -13,8 +13,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.farmgame.farmgame.GameObjects.Rock;
 import com.farmgame.farmgame.HUD.HUDStage;
+import com.farmgame.farmgame.collisions.Collisions;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.FarmGame;
+import com.farmgame.farmgame.items.Item;
+
+import java.util.ArrayList;
 
 public class GameScreen implements Screen {
     private final FarmGame game;
@@ -24,22 +28,32 @@ public class GameScreen implements Screen {
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Texture testMapTex;
     private Sprite testMapSprite;
+    public ArrayList<Rock> rockList = new ArrayList<>();
+    public ArrayList<Item> itemList = new ArrayList<>();
 
     private Player player;
     private Rock rock;
     private boolean cameraInitialized = false;
     private HUDStage hudStage;
+    private Collisions collisions;
+    public Item pickaxe;
 
     public GameScreen(FarmGame game) {
         this.game = game;
         this.batch = game.batch;
 
         player = new Player(80);
-        rock = new Rock(new Vector2(200, 200));
+        rockList.add(new Rock(new Vector2(200, 200)));
+        rockList.add(new Rock(new Vector2(250, 200)));
+        rockList.add(new Rock(new Vector2(200, 250)));
+        rockList.add(new Rock(new Vector2(200, 300)));
 
         testMapTex = new Texture(Gdx.files.internal("map/background1-big-wall.png"));
         testMapTex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         testMapSprite = new Sprite(testMapTex);
+
+        // hud
+        hudStage = new HUDStage();
 
         // camera
         camera = new OrthographicCamera();
@@ -47,8 +61,13 @@ public class GameScreen implements Screen {
         camera.position.set(player.position.x, player.position.y, 0);
         Gdx.graphics.setWindowedMode(1280, 720);
 
-        // hud
-        hudStage = new HUDStage();
+        //items
+        itemList.add(new Item("pickaxe", new Texture(Gdx.files.internal("items/pickaxe-item.png")), 1, new Vector2(200,100)));
+//        player.inventory[0] = pickaxe;
+
+        //collisions
+        collisions = new Collisions(player, hudStage, rockList, itemList);
+
         //input for hud
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(hudStage);
@@ -62,12 +81,12 @@ public class GameScreen implements Screen {
 
         // Smooth follow camera
         if (!cameraInitialized) {
-            camera.position.set(player.position.x, player.position.y, 0);
+            camera.position.set(player.position.x + 8, player.position.y + 8, 0);
             cameraInitialized = true;
         }
 
         float lerp = 15f;
-        Vector2 target = new Vector2(player.position.x, player.position.y);
+        Vector2 target = new Vector2(player.position.x + 8, player.position.y + 8);
         camera.position.x += (target.x - camera.position.x) * lerp * delta;
         camera.position.y += (target.y - camera.position.y) * lerp * delta;
 
@@ -79,7 +98,16 @@ public class GameScreen implements Screen {
 
         batch.begin();
         testMapSprite.draw(batch);
-        rock.draw(batch, delta);
+
+        //draw rocks
+        for (Rock rock : rockList) {
+            rock.draw(batch, delta);
+        }
+
+        // draw items
+        for (Item item : itemList) {
+            item.draw(batch, delta);
+        }
         player.draw(batch, delta);
         batch.end();
 
@@ -95,8 +123,10 @@ public class GameScreen implements Screen {
         hudStage.act(delta);
         hudStage.draw();
 
-        rockCollision();
-        rockPickaxeCollision();
+        collisions.rockCollision();
+        collisions.rockPickaxeCollision(delta);
+        collisions.itemCollision();
+        removeRocks();
         handleFullscreenToggle();
         pauseGame();
     }
@@ -114,34 +144,12 @@ public class GameScreen implements Screen {
 
     private void pauseGame() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new PauseScreen(game, this));
+            game.setScreen(new PauseScreen(game, this, viewport));
         }
     }
 
-    private void rockCollision() {
-        float oldX = player.prevX;
-        float oldY = player.prevY;
-
-        player.boundingBox.setPosition(player.position.x, oldY);
-        if (player.boundingBox.overlaps(rock.boundingBox)) {
-            player.position.x = oldX;
-        }
-
-        player.boundingBox.setPosition(player.position.x, player.position.y);
-        if (player.boundingBox.overlaps(rock.boundingBox)) {
-            player.position.y = oldY;
-        }
-
-        player.boundingBox.setPosition(player.position.x, player.position.y);
-    }
-
-    private void rockPickaxeCollision() {
-        if (player.hitBox != null) {
-
-            if (player.hitBox.overlaps(rock.boundingBox)) {
-                System.out.println("rock hit");
-            }
-        }
+    private void removeRocks() {
+            rockList.removeIf(rock -> rock.health <= 0);
     }
 
     @Override
@@ -152,7 +160,11 @@ public class GameScreen implements Screen {
     @Override public void show() {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(hudStage);
+        hudStage.itemSelector.redraw();
         Gdx.input.setInputProcessor(multiplexer);
+
+        cameraInitialized = false;
+
     }
     @Override public void hide() { }
     @Override public void pause() { }

@@ -52,8 +52,6 @@ public class Player {
         // inventory
         this.inventory = new Item[9];
         //add pickaxe to inventory
-        pickaxe = new Item("pickaxe", new Texture(Gdx.files.internal("items/pickaxe-item.png")), 1);
-        inventory[0] = pickaxe;
     }
 
     public void controls(float delta, TextureRegion currentFrame) {

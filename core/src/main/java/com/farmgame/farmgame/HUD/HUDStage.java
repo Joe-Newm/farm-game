@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class HUDStage extends Stage {
     private Table root;
-    private ItemSelector itemSelector;
+    public ItemSelector itemSelector;
 
     public HUDStage() {
         super(new ScreenViewport());
