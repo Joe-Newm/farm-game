@@ -12,16 +12,15 @@ import com.farmgame.farmgame.HUD.ItemSelector;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.entity.PlayerAnim;
 
-public class Pickaxe extends Item {
+public class Axe extends Item{
     public Sprite sprite;
-
-    public Pickaxe(Vector2 position, int quantity) {
+    public Axe(Vector2 position, int quantity) {
         super(position, quantity);
-        this.name = "pickaxe";
-        this.icon = new Texture(Gdx.files.internal("items/pickaxe-item.png"));
-        this.sprite = new Sprite(icon);
-        this.quantity = quantity;
         this.position = position;
+        this.quantity = quantity;
+        this.name = "axe";
+        this.icon = new Texture("items/axe-item.png");
+        this.sprite = new Sprite(icon);
         offsetFlag = false;
     }
 
@@ -35,10 +34,10 @@ public class Pickaxe extends Item {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // swing pickaxe
             if (Player.inventory[ItemSelector.selectedSlot] != null) {
-                if (Player.inventory[ItemSelector.selectedSlot].name == "pickaxe") {
-                    PlayerAnim.selectedAnimation = 6;
-                    PlayerAnim.swingPickaxeAnimation.setPlayMode(Animation.PlayMode.LOOP);
-                    if (Player.isFlipped && PlayerAnim.selectedAnimation == 6) {
+                if (Player.inventory[ItemSelector.selectedSlot].name == "axe") {
+                    PlayerAnim.selectedAnimation = 7;
+                    PlayerAnim.swingAxeAnimation.setPlayMode(Animation.PlayMode.LOOP);
+                    if (Player.isFlipped && PlayerAnim.selectedAnimation == 7) {
                         Player.drawOffset.x = -16;
                         offsetFlag = true;
                     }
@@ -46,7 +45,7 @@ public class Pickaxe extends Item {
             }
         }
 
-        if (PlayerAnim.selectedAnimation != 6 && offsetFlag) {
+        if (PlayerAnim.selectedAnimation != 7 && offsetFlag) {
             Player.drawOffset.x = 0;
             offsetFlag = false;
         }
@@ -59,6 +58,4 @@ public class Pickaxe extends Item {
         sprite.draw(batch);
         sprite.setPosition(position.x, position.y);
     }
-
-
 }

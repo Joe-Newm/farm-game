@@ -18,6 +18,7 @@ import com.farmgame.farmgame.HUD.HUDStage;
 import com.farmgame.farmgame.collisions.Collisions;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.FarmGame;
+import com.farmgame.farmgame.items.Axe;
 import com.farmgame.farmgame.items.Item;
 import com.farmgame.farmgame.items.Pickaxe;
 import com.farmgame.farmgame.utils.Drawable;
@@ -77,6 +78,7 @@ public class GameScreen implements Screen {
 
         //items
         itemList.add(new Pickaxe(new Vector2(200,100), 1));
+        itemList.add(new Axe(new Vector2(250, 100), 1));
 //        player.inventory[0] = pickaxe;
 
         //collisions

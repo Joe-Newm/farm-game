@@ -15,20 +15,26 @@ public class PlayerAnim {
     public static Animation<TextureRegion> idleAnimationUp;
     public static Animation<TextureRegion> idleAnimationDown;
     public static Animation<TextureRegion> swingPickaxeAnimation;
+    public static Animation<TextureRegion> swingAxeAnimation;
     public static ArrayList<Animation<TextureRegion>> animations;
     public static Texture walkSheet;
     public static Texture swingPickaxeSheet;
+    public static Texture swingAxeSheet;
     public static float walkAnimationTime;
     public static int selectedAnimation;
+
     public static void create() {
         walkSheet = new Texture(Gdx.files.internal("player/player-anim-v2.png"));
         swingPickaxeSheet = new Texture(Gdx.files.internal("player/pickaxe-swing.png"));
+        swingAxeSheet = new Texture(Gdx.files.internal("player/axe-swing.png"));
 
         // animations
         //walk anim sheet
         TextureRegion[][] tmpFrames = TextureRegion.split(walkSheet, walkSheet.getWidth() / 4, walkSheet.getHeight() / 3);
         //swing pickaxe sheet
         TextureRegion[][] tmpSwingFrames = TextureRegion.split(swingPickaxeSheet, swingPickaxeSheet.getWidth() / 2, swingPickaxeSheet.getHeight() / 1);
+        //swing axe sheet
+        TextureRegion[][] tmpAxeSwingFrames = TextureRegion.split(swingAxeSheet, swingAxeSheet.getWidth() / 2, swingAxeSheet.getHeight() / 1);
 
         // walk anim (left right)
         TextureRegion[] walkFramesHorizontal = new TextureRegion[3];
@@ -49,6 +55,10 @@ public class PlayerAnim {
         TextureRegion[] swingFrames = new TextureRegion[2];
         swingFrames[0] = tmpSwingFrames[0][0];
         swingFrames[1] = tmpSwingFrames[0][1];
+        //swing axe anim
+        TextureRegion[] swingAxeFrames = new TextureRegion[2];
+        swingAxeFrames[0] = tmpAxeSwingFrames[0][0];
+        swingAxeFrames[1] = tmpAxeSwingFrames[0][1];
         //idle (left right) anim
         TextureRegion[] idleFrame = new TextureRegion[1];
         idleFrame[0] = tmpFrames[0][0];
@@ -67,6 +77,7 @@ public class PlayerAnim {
         idleAnimationUp = new Animation<TextureRegion>(0.1f, idleUpFrame);
         idleAnimationDown = new Animation<TextureRegion>(0.1f, idleDownFrame);
         swingPickaxeAnimation = new Animation<TextureRegion>(0.1f, swingFrames);
+        swingAxeAnimation = new Animation<TextureRegion>(0.1f, swingAxeFrames);
 
         // add animations to arraylist
         selectedAnimation = 0;
@@ -86,5 +97,7 @@ public class PlayerAnim {
         animations.add(walkAnimationDown);
         //6
         animations.add(swingPickaxeAnimation);
+        //7
+        animations.add(swingAxeAnimation);
     }
 }

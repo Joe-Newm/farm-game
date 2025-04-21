@@ -68,7 +68,7 @@ public class Player implements Drawable {
         Vector2 direction = new Vector2(0,0);
 
         // movement
-        if (PlayerAnim.selectedAnimation != 6) {
+        if (PlayerAnim.selectedAnimation != 6 && PlayerAnim.selectedAnimation != 7) {
             if (Gdx.input.isKeyPressed(Keys.A)) {
                 direction.x -= 1;
                 movingLeft = true;
