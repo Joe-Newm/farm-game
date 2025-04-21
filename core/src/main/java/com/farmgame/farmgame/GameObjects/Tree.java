@@ -6,28 +6,32 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Rock extends GameObject {
-    public Texture rock;
+public class Tree extends GameObject {
+    public Texture texture;
     public Sprite sprite;
 
-    public Rock(Vector2 position) {
+    public Tree(Vector2 position) {
         super(position);
-        rock = new Texture("objects/rock2.png");
-        sprite = new Sprite(rock);
-        this.position = position;
+        texture = new Texture("objects/tree.png");
+        sprite = new Sprite(texture);
         this.health = 3f;
+        this.position = position;
 
-        this.boundingBox = new Rectangle(position.x,position.y,sprite.getWidth() ,sprite.getHeight());
+        this.boundingBox = new Rectangle(this.position.x + 16, this.position.y, 16, 16);
     }
 
+    @Override
     public void update(float delta) {
-        this.boundingBox.setPosition(position.x, position.y);
-
+        this.boundingBox.setPosition(position.x + 16, position.y);
     }
 
+
+    @Override
     public void draw(SpriteBatch batch, float delta) {
         update(delta);
-        sprite.setPosition(position.x, position.y);
         sprite.draw(batch);
+        sprite.setPosition(position.x, position.y);
     }
+
+
 }

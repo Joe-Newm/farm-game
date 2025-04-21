@@ -11,7 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.farmgame.farmgame.GameObjects.GameObject;
 import com.farmgame.farmgame.GameObjects.Rock;
+import com.farmgame.farmgame.GameObjects.Tree;
 import com.farmgame.farmgame.HUD.HUDStage;
 import com.farmgame.farmgame.collisions.Collisions;
 import com.farmgame.farmgame.entity.Player;
@@ -28,7 +30,7 @@ public class GameScreen implements Screen {
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Texture testMapTex;
     private Sprite testMapSprite;
-    public ArrayList<Rock> rockList = new ArrayList<>();
+    public ArrayList<GameObject> gameObjectList = new ArrayList<>();
     public ArrayList<Item> itemList = new ArrayList<>();
 
     private Player player;
@@ -43,10 +45,11 @@ public class GameScreen implements Screen {
         this.batch = game.batch;
 
         player = new Player(80);
-        rockList.add(new Rock(new Vector2(200, 200)));
-        rockList.add(new Rock(new Vector2(250, 200)));
-        rockList.add(new Rock(new Vector2(200, 250)));
-        rockList.add(new Rock(new Vector2(200, 300)));
+        gameObjectList.add(new Rock(new Vector2(200, 200)));
+        gameObjectList.add(new Rock(new Vector2(250, 200)));
+        gameObjectList.add(new Rock(new Vector2(200, 250)));
+        gameObjectList.add(new Rock(new Vector2(200, 300)));
+        gameObjectList.add(new Tree(new Vector2(250, 300)));
 
         testMapTex = new Texture(Gdx.files.internal("map/background1-big-wall.png"));
         testMapTex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -66,7 +69,7 @@ public class GameScreen implements Screen {
 //        player.inventory[0] = pickaxe;
 
         //collisions
-        collisions = new Collisions(player, hudStage, rockList, itemList);
+        collisions = new Collisions(player, hudStage, gameObjectList, itemList);
 
         //input for hud
         InputMultiplexer multiplexer = new InputMultiplexer();
@@ -99,16 +102,19 @@ public class GameScreen implements Screen {
         batch.begin();
         testMapSprite.draw(batch);
 
-        //draw rocks
-        for (Rock rock : rockList) {
-            rock.draw(batch, delta);
-        }
-
         // draw items
         for (Item item : itemList) {
             item.draw(batch, delta);
         }
+
+        // draw player
         player.draw(batch, delta);
+
+        //draw rocks
+        for (GameObject obj : gameObjectList) {
+            obj.draw(batch, delta);
+        }
+
         batch.end();
 
         //debug hitbox
@@ -123,10 +129,10 @@ public class GameScreen implements Screen {
         hudStage.act(delta);
         hudStage.draw();
 
-        collisions.rockCollision();
+        collisions.objectCollision();
         collisions.rockPickaxeCollision(delta);
         collisions.itemCollision();
-        removeRocks();
+        collisions.rockRemove();
         handleFullscreenToggle();
         pauseGame();
     }
@@ -146,10 +152,6 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new PauseScreen(game, this, viewport));
         }
-    }
-
-    private void removeRocks() {
-            rockList.removeIf(rock -> rock.health <= 0);
     }
 
     @Override

@@ -5,12 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 import com.farmgame.farmgame.entity.Player;
 
 public class ItemSelector extends Table {
@@ -28,15 +31,36 @@ public class ItemSelector extends Table {
             Color slotColor = (i == selectedSlot) ? Color.LIGHT_GRAY : Color.DARK_GRAY;
             Drawable box = skin.newDrawable("white", slotColor);
 
-            Container<Table> slot = new Container<>();
+            Container<Actor> slot = new Container<>();
+            slot.size(64, 64);
             slot.setBackground(box);
 
             // add icon from inventory
-            Table content = new Table();
+            Stack content = new Stack();
+            //content.setFillParent(true);
+
             if (Player.inventory[index] != null) {
                 TextureRegionDrawable itemDrawable = new TextureRegionDrawable(new TextureRegion(Player.inventory[index].icon));
+
+                // Item image
                 Image itemImage = new Image(itemDrawable);
-                content.add(itemImage).size(48, 48);
+                itemImage.setScaling(Scaling.fit);
+                itemImage.setAlign(Align.center);
+
+                // Quantity label
+                Label.LabelStyle labelStyle = new Label.LabelStyle();
+                labelStyle.font = skin.getFont("default-font");
+                labelStyle.fontColor = Color.WHITE;
+
+                Label quantityLabel = new Label(String.valueOf(Player.inventory[index].quantity), labelStyle);
+
+                // Wrap quantity label in a table to position it bottom-right
+                Table quantityTable = new Table();
+                quantityTable.add(quantityLabel).bottom().right().expand().pad(4);
+
+                // Add image and label overlay
+                content.add(itemImage);
+                content.add(quantityTable);
             }
             slot.setActor(content);
 
@@ -80,15 +104,35 @@ public class ItemSelector extends Table {
             Color slotColor = (i == selectedSlot) ? Color.LIGHT_GRAY : Color.DARK_GRAY;
             Drawable box = skin.newDrawable("white", slotColor);
 
-            Container<Table> slot = new Container<>();
+            Container<Actor> slot = new Container<>();
+            slot.size(64, 64);
             slot.setBackground(box);
 
             // add icon from inventory
-            Table content = new Table();
+            Stack content = new Stack();
+            //content.setFillParent(true);
             if (Player.inventory[index] != null) {
                 TextureRegionDrawable itemDrawable = new TextureRegionDrawable(new TextureRegion(Player.inventory[index].icon));
+
+                // Item image
                 Image itemImage = new Image(itemDrawable);
-                content.add(itemImage).size(48, 48);
+                itemImage.setScaling(Scaling.fit);
+                itemImage.setAlign(Align.center);
+
+                // Quantity label
+                Label.LabelStyle labelStyle = new Label.LabelStyle();
+                labelStyle.font = skin.getFont("default-font");
+                labelStyle.fontColor = Color.WHITE;
+
+                Label quantityLabel = new Label(String.valueOf(Player.inventory[index].quantity), labelStyle);
+
+                // Wrap quantity label in a table to position it bottom-right
+                Table quantityTable = new Table();
+                quantityTable.add(quantityLabel).bottom().right().expand().pad(4);
+
+                // Add image and label overlay
+                content.add(itemImage);
+                content.add(quantityTable);
             }
             slot.setActor(content);
 

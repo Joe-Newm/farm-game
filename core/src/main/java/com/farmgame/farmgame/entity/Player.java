@@ -64,33 +64,39 @@ public class Player {
         boolean movingDown = false;
         boolean moving = false;
 
+        Vector2 direction = new Vector2(0,0);
+
         // movement
         if (PlayerAnim.selectedAnimation != 6) {
             if (Gdx.input.isKeyPressed(Keys.A)) {
-                prevX = position.x;
-                position.x -= delta * tmpSpeed;
+                direction.x -= 1;
                 movingLeft = true;
                 moving = true;
             }
             if (Gdx.input.isKeyPressed(Keys.D)) {
-                prevX = position.x;
-                position.x += delta * tmpSpeed;
+                direction.x += 1;
                 movingRight = true;
                 moving = true;
             }
             if (Gdx.input.isKeyPressed(Keys.W)) {
-                prevY = position.y;
-                position.y += delta * tmpSpeed;
+                direction.y += 1;
                 movingUp = true;
                 moving = true;
             }
             if (Gdx.input.isKeyPressed(Keys.S)) {
-                prevY = position.y;
-                position.y -= delta * tmpSpeed;
+                direction.y -= 1;
                 movingDown = true;
                 moving = true;
             }
+            if (!direction.isZero()) {
+                direction.nor();
+                prevX = position.x;
+                prevY = position.y;
+                position.add(direction.scl(delta * tmpSpeed));
+            }
         }
+
+
         if (movingLeft && !currentFrame.isFlipX()) {
             for (Animation<TextureRegion> anim : PlayerAnim.animations) {
                 for (TextureRegion frame : anim.getKeyFrames()) {
