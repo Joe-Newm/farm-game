@@ -8,6 +8,7 @@ import com.farmgame.farmgame.GameObjects.Rock;
 import com.farmgame.farmgame.HUD.HUDStage;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.items.Item;
+import com.farmgame.farmgame.items.Stone;
 
 import java.util.ArrayList;
 
@@ -88,7 +89,7 @@ public class Collisions {
                 Rock rock = (Rock) obj;
                 if (rock.health <= 0) {
                     rockRemoveList.add(rock);
-                    itemList.add(new Item("stone", new Texture(Gdx.files.internal("items/stone.png")), 1, new Vector2(rock.position.x, rock.position.y)));
+                    itemList.add(new Stone(new Vector2(rock.position.x, rock.position.y), 1));
                 }
             }
         }

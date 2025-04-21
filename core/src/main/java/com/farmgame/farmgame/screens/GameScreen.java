@@ -19,8 +19,10 @@ import com.farmgame.farmgame.collisions.Collisions;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.FarmGame;
 import com.farmgame.farmgame.items.Item;
+import com.farmgame.farmgame.items.Pickaxe;
+import com.farmgame.farmgame.utils.Drawable;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class GameScreen implements Screen {
     private final FarmGame game;
@@ -44,12 +46,21 @@ public class GameScreen implements Screen {
         this.game = game;
         this.batch = game.batch;
 
+
+
         player = new Player(80);
         gameObjectList.add(new Rock(new Vector2(200, 200)));
-        gameObjectList.add(new Rock(new Vector2(250, 200)));
         gameObjectList.add(new Rock(new Vector2(200, 250)));
         gameObjectList.add(new Rock(new Vector2(200, 300)));
-        gameObjectList.add(new Tree(new Vector2(250, 300)));
+        gameObjectList.add(new Rock(new Vector2(250, 200)));
+        gameObjectList.add(new Rock(new Vector2(250, 250)));
+        gameObjectList.add(new Rock(new Vector2(250, 300)));
+        gameObjectList.add(new Tree(new Vector2(300, 200)));
+        gameObjectList.add(new Tree(new Vector2(300, 250)));
+        gameObjectList.add(new Tree(new Vector2(300, 300)));
+        gameObjectList.add(new Tree(new Vector2(350, 200)));
+        gameObjectList.add(new Tree(new Vector2(350, 250)));
+        gameObjectList.add(new Tree(new Vector2(350, 300)));
 
         testMapTex = new Texture(Gdx.files.internal("map/background1-big-wall.png"));
         testMapTex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -65,7 +76,7 @@ public class GameScreen implements Screen {
         Gdx.graphics.setWindowedMode(1280, 720);
 
         //items
-        itemList.add(new Item("pickaxe", new Texture(Gdx.files.internal("items/pickaxe-item.png")), 1, new Vector2(200,100)));
+        itemList.add(new Pickaxe(new Vector2(200,100), 1));
 //        player.inventory[0] = pickaxe;
 
         //collisions
@@ -75,6 +86,8 @@ public class GameScreen implements Screen {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(hudStage);
         Gdx.input.setInputProcessor(multiplexer);
+
+
 
     }
 
@@ -98,6 +111,15 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
+        //drawables
+        List<Drawable> drawables = new ArrayList<>();
+        drawables.addAll(gameObjectList); // Trees, rocks, etc.
+        drawables.add(player);
+        // Group by layer
+        Map<Integer, List<Drawable>> drawLayers = new TreeMap<>();
+        for (Drawable d : drawables) {
+            drawLayers.computeIfAbsent(d.getDrawLayer(), k -> new ArrayList<>()).add(d);
+        }
 
         batch.begin();
         testMapSprite.draw(batch);
@@ -107,12 +129,19 @@ public class GameScreen implements Screen {
             item.draw(batch, delta);
         }
 
-        // draw player
-        player.draw(batch, delta);
+        // draw gameobjects and player by layer.
+        for (Map.Entry<Integer, List<Drawable>> entry : drawLayers.entrySet()) {
+            int layer = entry.getKey();
+            List<Drawable> layerDrawables = entry.getValue();
 
-        //draw rocks
-        for (GameObject obj : gameObjectList) {
-            obj.draw(batch, delta);
+            // Only Y-sort trees (or any layer you want)
+            if (layer == 11) { // For example, tree layer
+                layerDrawables.sort(Comparator.comparing(Drawable::getY).reversed());
+            }
+
+            for (Drawable d : layerDrawables) {
+                d.draw(batch, delta);
+            }
         }
 
         batch.end();

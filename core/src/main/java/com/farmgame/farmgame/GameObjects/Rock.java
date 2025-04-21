@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.farmgame.farmgame.utils.Drawable;
 
 public class Rock extends GameObject {
     public Texture rock;
@@ -25,6 +26,18 @@ public class Rock extends GameObject {
 
     }
 
+    @Override
+    public int getDrawLayer() {
+        return 1; // Player layer
+    }
+
+
+    @Override
+    public float getY() {
+        return position.y;
+    }
+
+    @Override
     public void draw(SpriteBatch batch, float delta) {
         update(delta);
         sprite.setPosition(position.x, position.y);

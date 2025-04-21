@@ -16,6 +16,7 @@ public class Tree extends GameObject {
         sprite = new Sprite(texture);
         this.health = 3f;
         this.position = position;
+        this.position.x -= 16;
 
         this.boundingBox = new Rectangle(this.position.x + 16, this.position.y, 16, 16);
     }
@@ -25,6 +26,15 @@ public class Tree extends GameObject {
         this.boundingBox.setPosition(position.x + 16, position.y);
     }
 
+    @Override
+    public int getDrawLayer() {
+        return 11; // Player layer
+    }
+
+    @Override
+    public float getY() {
+        return position.y;
+    }
 
     @Override
     public void draw(SpriteBatch batch, float delta) {

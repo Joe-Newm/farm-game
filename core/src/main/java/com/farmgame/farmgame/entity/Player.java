@@ -9,10 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.farmgame.farmgame.utils.Drawable;
 import com.farmgame.farmgame.HUD.ItemSelector;
 import com.farmgame.farmgame.items.Item;
 
-public class Player {
+public class Player implements Drawable {
     public float speed;
     public Texture playTex;
     public static Sprite sprite;
@@ -156,7 +157,17 @@ public class Player {
         listenForItemAction();
         hitBox();
     }
+    @Override
+    public int getDrawLayer() {
+        return 10; // Player layer
+    }
 
+    @Override
+    public float getY() {
+        return position.y;
+    }
+
+    @Override
     public void draw(SpriteBatch batch, float delta) {
         update(delta);
         TextureRegion currentFrame = PlayerAnim.animations.get(PlayerAnim.selectedAnimation).getKeyFrame(PlayerAnim.walkAnimationTime);
