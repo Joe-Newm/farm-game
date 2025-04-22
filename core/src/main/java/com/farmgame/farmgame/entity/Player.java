@@ -54,7 +54,7 @@ public class Player implements Drawable {
         isFlipped = currentFrame.isFlipX();
 
         // inventory
-        this.inventory = new Item[9];
+        this.inventory = new Item[18];
         //add pickaxe to inventory
     }
 
