@@ -181,7 +181,7 @@ public class GameScreen implements Screen {
 
     private void pauseGame() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new PauseScreen(game, this, viewport));
+            game.setScreen(new PauseScreen(game, this));
         }
     }
 

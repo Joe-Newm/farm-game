@@ -15,10 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.farmgame.farmgame.FarmGame;
 import com.farmgame.farmgame.HUD.ItemSelector;
 import com.farmgame.farmgame.entity.Player;
+
+import java.util.ArrayList;
+
 
 import static com.farmgame.farmgame.HUD.ItemSelector.selectedSlot;
 
@@ -28,19 +33,17 @@ public class PauseScreen implements Screen {
     private Viewport viewport;
     private Table inventoryTable;
     private DragAndDrop dragAndDrop;
-
-
     private Stage stage;
 
-    public PauseScreen(FarmGame game, Screen returnTo, Viewport viewport) {
+
+    public PauseScreen(FarmGame game, Screen returnTo) {
         this.game = game;
         this.returnTo = returnTo;
-        this.viewport = viewport;
         dragAndDrop = new DragAndDrop();
         dragAndDrop.setTapSquareSize(0);
 
 
-        stage = new Stage();
+        stage = new Stage(new FitViewport(1280, 720));
 
         inventoryTable = new Table();
         inventoryTable.setFillParent(true);
@@ -50,7 +53,6 @@ public class PauseScreen implements Screen {
         //inventoryTable.setBackground(skin.newDrawable("white", Color.BLACK) );
 
         //Label pauseLabel = new Label("GAME PAUSE", skin);
-
 
         drawInventory();
         Gdx.input.setInputProcessor(stage);
@@ -80,6 +82,7 @@ public class PauseScreen implements Screen {
             // add icon from inventory
             Table content = new Table();
             Image itemImage;
+
             if (Player.inventory[index] != null) {
                 TextureRegionDrawable itemDrawable = new TextureRegionDrawable(new TextureRegion(Player.inventory[index].icon));
                 itemImage = new Image(itemDrawable);
@@ -109,6 +112,8 @@ public class PauseScreen implements Screen {
             dragAndDrop.addTarget(new DragAndDrop.Target(slot) {
                 @Override
                 public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                    System.out.println("Dragging over slot: " + index);
+
                     return true;
                 }
 
@@ -121,9 +126,10 @@ public class PauseScreen implements Screen {
                     var temp = Player.inventory[sourceIndex];
                     Player.inventory[sourceIndex] = Player.inventory[targetIndex];
                     Player.inventory[targetIndex] = temp;
+                    System.out.println("DROP TRIGGERED: " + sourceIndex + " → " + targetIndex);
 
                     // draw inventory
-                    drawInventory();
+                    Gdx.app.postRunnable(() -> drawInventory());
                 }
             });
         }
@@ -148,7 +154,7 @@ public class PauseScreen implements Screen {
 
     // other Screen methods can be left empty or basic
     @Override public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        stage.getViewport().update(width, height, true);
     }
     @Override public void pause() {}
     @Override public void resume() {}
