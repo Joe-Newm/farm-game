@@ -10,10 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.farmgame.farmgame.HUD.Inventory;
+import com.farmgame.farmgame.screens.GameScreen;
 
 public class HUDStage extends Stage {
     private Table root;
     public ItemSelector itemSelector;
+    public Inventory playerInventory;
 
     public HUDStage() {
         super(new ScreenViewport());
@@ -25,8 +28,11 @@ public class HUDStage extends Stage {
         this.addActor(root);
 
         itemSelector = new ItemSelector(skin);
+        playerInventory = new Inventory(this);
 
-        root.bottom().center().add(itemSelector).padBottom(-600);
+        root.bottom().center().add(itemSelector).padBottom(-800);
+        root.row();
+        root.add(playerInventory);
     }
 
     @Override
@@ -45,5 +51,12 @@ public class HUDStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         itemSelector.update();
+        playerInventory.setVisible(GameScreen.isPaused);
     }
+
+    @Override
+    public void draw() {
+        super.draw();
+    }
+
 }

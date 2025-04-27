@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
     private Sprite testMapSprite;
     public ArrayList<GameObject> gameObjectList = new ArrayList<>();
     public ArrayList<Item> itemList = new ArrayList<>();
+    public static boolean isPaused = false;
 
     private Player player;
     private Rock rock;
@@ -181,7 +182,9 @@ public class GameScreen implements Screen {
 
     private void pauseGame() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new PauseScreen(game, this));
+            //game.setScreen(new PauseScreen(game, this));
+            isPaused = !isPaused;
+            hudStage.itemSelector.redraw();
         }
     }
 

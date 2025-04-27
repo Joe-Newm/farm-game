@@ -35,6 +35,7 @@ public class Collisions {
                             player.inventory[i].quantity += item.quantity;
                             itemList.remove(item);
                             hudStage.itemSelector.redraw();
+                            hudStage.playerInventory.drawInventory();
                             return;
                         }
                     }
@@ -42,6 +43,7 @@ public class Collisions {
                         player.inventory[i] = item;
                         itemList.remove(item); // Remove from world
                         hudStage.itemSelector.redraw();
+                        hudStage.playerInventory.drawInventory();
                         return; // Exit after picking up one item
                     }
                 }

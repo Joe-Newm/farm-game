@@ -25,6 +25,10 @@ public class ItemSelector extends Table {
         this.skin = skin;
         this.setTouchable(Touchable.enabled);
 
+        this.setBackground(skin.newDrawable("white", Color.BLACK) );
+
+        skin.getAtlas().getTextures().first().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
 
         // Add dummy item slots
         for (int i = 0; i < 9; i++) {
