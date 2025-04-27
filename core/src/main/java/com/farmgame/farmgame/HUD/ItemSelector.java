@@ -142,7 +142,6 @@ public class ItemSelector extends Table {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     selectedSlot = index;
-                    System.out.println("Clicked slot: " + selectedSlot);
                     redraw();
                 }
             });

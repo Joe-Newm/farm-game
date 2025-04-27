@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class HUDStage extends Stage implements InputProcessor {
+public class HUDStage extends Stage {
     private Table root;
     public ItemSelector itemSelector;
 
@@ -31,7 +31,6 @@ public class HUDStage extends Stage implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        System.out.println(amountY);
         if (amountY == 1) {
             ItemSelector.selectedSlot++;
             itemSelector.redraw();
