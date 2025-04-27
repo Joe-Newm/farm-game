@@ -1,15 +1,17 @@
 package com.farmgame.farmgame.HUD;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class HUDStage extends Stage {
+public class HUDStage extends Stage implements InputProcessor {
     private Table root;
     public ItemSelector itemSelector;
 
@@ -23,7 +25,21 @@ public class HUDStage extends Stage {
         this.addActor(root);
 
         itemSelector = new ItemSelector(skin);
+
         root.bottom().center().add(itemSelector).padBottom(-600);
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        System.out.println(amountY);
+        if (amountY == 1) {
+            ItemSelector.selectedSlot++;
+            itemSelector.redraw();
+        } else if (amountY == -1) {
+            ItemSelector.selectedSlot--;
+            itemSelector.redraw();
+        }
+        return false;
     }
 
     @Override

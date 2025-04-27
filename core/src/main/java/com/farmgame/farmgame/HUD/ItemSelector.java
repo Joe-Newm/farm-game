@@ -2,6 +2,7 @@ package com.farmgame.farmgame.HUD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -23,6 +24,7 @@ public class ItemSelector extends Table {
     public ItemSelector(Skin skin) {
         this.skin = skin;
         this.setTouchable(Touchable.enabled);
+
 
         // Add dummy item slots
         for (int i = 0; i < 9; i++) {
@@ -78,16 +80,16 @@ public class ItemSelector extends Table {
     }
 
     public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_RIGHT)) {
-            selectedSlot++;
-            System.out.println("Pressed button, index is now: " + selectedSlot);
-            redraw();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)) {
-            selectedSlot--;
-            System.out.println("Pressed button, index is now: " + selectedSlot);
-            redraw();
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_RIGHT)) {
+//            selectedSlot++;
+//            System.out.println("Pressed button, index is now: " + selectedSlot);
+//            redraw();
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)) {
+//            selectedSlot--;
+//            System.out.println("Pressed button, index is now: " + selectedSlot);
+//            redraw();
+//        }
     }
 
     public void redraw() {
@@ -149,4 +151,6 @@ public class ItemSelector extends Table {
             this.add(slot).size(64, 64).pad(4);
         }
     }
+
+
 }
