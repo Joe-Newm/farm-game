@@ -18,69 +18,22 @@ import com.badlogic.gdx.utils.Scaling;
 import com.farmgame.farmgame.entity.Player;
 
 public class ItemSelector extends Table {
-    public static int selectedSlot = 0;
+    public static int selectedSlot;
     private Skin skin;
 
     public ItemSelector(Skin skin) {
         this.skin = skin;
         this.setTouchable(Touchable.enabled);
+        selectedSlot = 0;
 
-        this.setBackground(skin.newDrawable("white", Color.BLACK) );
+        this.setBackground(skin.newDrawable("white", Color.BLACK));
 
         skin.getAtlas().getTextures().first().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
 
-        // Add dummy item slots
-        for (int i = 0; i < 9; i++) {
-            final int index = i;
+        redraw();
 
-            Color slotColor = (i == selectedSlot) ? Color.LIGHT_GRAY : Color.DARK_GRAY;
-            Drawable box = skin.newDrawable("white", slotColor);
 
-            Container<Actor> slot = new Container<>();
-            slot.size(64, 64);
-            slot.setBackground(box);
-
-            // add icon from inventory
-            Stack content = new Stack();
-            //content.setFillParent(true);
-
-            if (Player.inventory[index] != null) {
-                TextureRegionDrawable itemDrawable = new TextureRegionDrawable(new TextureRegion(Player.inventory[index].icon));
-
-                // Item image
-                Image itemImage = new Image(itemDrawable);
-                itemImage.setScaling(Scaling.fit);
-                itemImage.setAlign(Align.center);
-
-                // Quantity label
-                Label.LabelStyle labelStyle = new Label.LabelStyle();
-                labelStyle.font = skin.getFont("default-font");
-                labelStyle.fontColor = Color.WHITE;
-
-                Label quantityLabel = new Label(String.valueOf(Player.inventory[index].quantity), labelStyle);
-
-                // Wrap quantity label in a table to position it bottom-right
-                Table quantityTable = new Table();
-                quantityTable.add(quantityLabel).bottom().right().expand().pad(4);
-
-                // Add image and label overlay
-                content.add(itemImage);
-                content.add(quantityTable);
-            }
-            slot.setActor(content);
-
-            slot.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    selectedSlot = index;
-                    System.out.println("Clicked slot: " + selectedSlot);
-                    redraw();
-                }
-            });
-            slot.setTouchable(Touchable.enabled);
-            this.add(slot).size(64, 64).pad(4);
-        }
     }
 
     public void update() {
