@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.farmgame.farmgame.GameObjects.GameObject;
 import com.farmgame.farmgame.GameObjects.Rock;
+import com.farmgame.farmgame.GameObjects.Tree;
 import com.farmgame.farmgame.HUD.HUDStage;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.items.Item;
 import com.farmgame.farmgame.items.Stone;
+import com.farmgame.farmgame.items.Wood;
 
 import java.util.ArrayList;
 
@@ -82,6 +84,34 @@ public class Collisions {
                 }
             }
         }
+    }
+
+    public void treeAxeCollision(float delta) {
+        if (player.hitBox != null) {
+            for (GameObject obj : gameObjectList) {
+                if (obj instanceof Tree) {
+                    Tree tree = (Tree) obj;
+                    if (player.hitBox.overlaps(tree.boundingBox)) {
+                        tree.health -= delta;
+                        System.out.println(tree.health);
+                    }
+                }
+            }
+        }
+    }
+
+    public void treeRemove() {
+        ArrayList<GameObject> treeRemoveList = new ArrayList<>();
+        for (GameObject obj : gameObjectList) {
+            if (obj instanceof Tree) {
+                Tree tree = (Tree) obj;
+                if (tree.health <= 0) {
+                    treeRemoveList.add(tree);
+                    itemList.add(new Wood(new Vector2(tree.position.x, tree.position.y), 1));
+                }
+            }
+        }
+        gameObjectList.removeAll(treeRemoveList);
     }
 
     public void rockRemove() {

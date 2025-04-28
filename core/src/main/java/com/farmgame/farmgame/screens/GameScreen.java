@@ -165,6 +165,8 @@ public class GameScreen implements Screen {
         collisions.rockPickaxeCollision(delta);
         collisions.itemCollision();
         collisions.rockRemove();
+        collisions.treeAxeCollision(delta);
+        collisions.treeRemove();
         handleFullscreenToggle();
         pauseGame();
     }

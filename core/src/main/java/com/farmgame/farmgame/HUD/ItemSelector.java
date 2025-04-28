@@ -37,16 +37,16 @@ public class ItemSelector extends Table {
     }
 
     public void update() {
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_RIGHT)) {
-//            selectedSlot++;
-//            System.out.println("Pressed button, index is now: " + selectedSlot);
-//            redraw();
-//        }
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)) {
-//            selectedSlot--;
-//            System.out.println("Pressed button, index is now: " + selectedSlot);
-//            redraw();
-//        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_RIGHT)) {
+            selectedSlot++;
+            System.out.println("Pressed button, index is now: " + selectedSlot);
+            redraw();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DPAD_LEFT)) {
+            selectedSlot--;
+            System.out.println("Pressed button, index is now: " + selectedSlot);
+            redraw();
+        }
     }
 
     public void redraw() {
