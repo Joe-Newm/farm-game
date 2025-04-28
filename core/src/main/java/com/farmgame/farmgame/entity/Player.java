@@ -135,7 +135,7 @@ public class Player implements Drawable {
         float spriteWidth = sprite.getWidth() ;
         float spriteHeight = sprite.getHeight();
 
-        if (PlayerAnim.selectedAnimation == 6) {
+        if (PlayerAnim.selectedAnimation == 6 || PlayerAnim.selectedAnimation == 7) {
             if (isFlipped) {
                 hitBox = new Rectangle(spriteX - 16, spriteY, spriteWidth, spriteHeight);
             } else {

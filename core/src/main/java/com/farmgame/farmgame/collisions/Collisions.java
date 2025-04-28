@@ -7,6 +7,7 @@ import com.farmgame.farmgame.GameObjects.GameObject;
 import com.farmgame.farmgame.GameObjects.Rock;
 import com.farmgame.farmgame.GameObjects.Tree;
 import com.farmgame.farmgame.HUD.HUDStage;
+import com.farmgame.farmgame.HUD.ItemSelector;
 import com.farmgame.farmgame.entity.Player;
 import com.farmgame.farmgame.items.Item;
 import com.farmgame.farmgame.items.Stone;
@@ -73,7 +74,7 @@ public class Collisions {
     }
 
     public void rockPickaxeCollision(float delta) {
-        if (player.hitBox != null) {
+        if (player.hitBox != null && Player.inventory[ItemSelector.selectedSlot].name == "pickaxe") {
             for (GameObject obj : gameObjectList) {
                 if (obj instanceof Rock) {
                     Rock rock = (Rock) obj;
@@ -87,7 +88,7 @@ public class Collisions {
     }
 
     public void treeAxeCollision(float delta) {
-        if (player.hitBox != null) {
+        if (player.hitBox != null && Player.inventory[ItemSelector.selectedSlot].name == "axe" ) {
             for (GameObject obj : gameObjectList) {
                 if (obj instanceof Tree) {
                     Tree tree = (Tree) obj;
@@ -107,7 +108,7 @@ public class Collisions {
                 Tree tree = (Tree) obj;
                 if (tree.health <= 0) {
                     treeRemoveList.add(tree);
-                    itemList.add(new Wood(new Vector2(tree.position.x, tree.position.y), 1));
+                    itemList.add(new Wood(new Vector2(tree.position.x +16, tree.position.y), 1));
                 }
             }
         }
